@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:with="currentPage='Chat'">
+<body style="height: 100%; width: 100%">
+<div th:include="header.html"></div>
+<main>
+    <div class="danger" th:if="${errors != null && !errors.empty}">
+        <ul th:each="error : ${errors}">
+            <li th:text="${error}"></li>
+        </ul>
+    </div>
+    <h3>Your status:</h3>
+    <p th:text="${session.user.status}" id="statusp"></p>
+
+        <p>
+            <label for="status">Change status</label>
+            <input type="text" id="status" name="status" list="statusses" th:value="${session.user.status}">
+            <datalist id="statusses">
+                <option>Online</option>
+                <option>Offline</option>
+                <option>Away</option>
+            </datalist>
+        </p>
+        <p>
+            <input type="button" value="Change" id="changeStatus">
+        </p>
+
+    <h3>Your Friends:</h3>
+    <!--<table th:each="friend : ${session.user.friends}">
+        <tr>
+            <td th:text="${friend.firstName}"></td>
+            <td th:text="${friend.status}"></td>
+        </tr>
+    </table>-->
+    <table id="friends">
+
+    </table>
+
+
+        <p>
+            <label for="friend">Add Friend</label>
+            <input type="text" name="friend" id="friend">
+        </p>
+        <p>
+            <input type="button" value="Add" id="addFriendButton"/>
+        </p>
+
+    <div>
+        <input type="text" id="messageinput"/>
+    </div>
+    <div>
+        <button type="button" onclick="openSocket();" >Open</button>
+        <button type="button" onclick="send();" >Send</button>
+        <button type="button" onclick="closeSocket();" >Close</button>
+    </div>
+    <div id="messages"></div>
+
+</main>
+<div th:include="footer.html"></div>
+<script type="text/javascript" src="/js/status.js"></script>
+<script type="text/javascript">
+    var webSocket;
+    var messages = document.getElementById("messages");
+
+    function openSocket(){
+        webSocket = new WebSocket("ws://localhost:8080/chat/echo");
+
+        webSocket.onopen = function(event){
+            writeResponse("Connection opened")
+        };
+
+        webSocket.onmessage = function(event){
+            writeResponse(event.data);
+        };
+
+        webSocket.onclose = function(event){
+            writeResponse("Connection closed");
+        };
+    }
+
+    function send(){
+        var text = document.getElementById("messageinput").value;
+        webSocket.send(text);
+    }
+
+    function closeSocket(){
+        webSocket.close();
+    }
+
+    function writeResponse(text){
+        messages.innerHTML += "<br/>" + text;
+    }
+</script>
+</body>
+</html>

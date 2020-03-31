@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:with="currentPage='Home'">
+<body style="height: 100%; width: 100%">
+<div th:include="header.html"></div>
+<main>
+    <div class="danger" th:if="${errors != null && !errors.empty}">
+        <p th:text="${errors}"></p>
+        <ul th:each="error : ${errors}">
+            <li th:text="${error}"></li>
+        </ul>
+    </div>
+    <div th:if="${session.user != null}" style="
+         position: relative;
+         bottom: -35%;
+         left: 5%;">
+        <p th:text="${'Welcome '+session.user.firstName+'!'}" style="
+           margin-left: 37.5%;"
+        ></p>
+        <form method="post" action="/logout" style="vertical-align: middle;">
+            <p>
+                <input type="submit" id="logoutbutton" value="Log Out">
+            </p>
+        </form>
+    </div>
+    <div th:unless="${session.user != null}" style="
+         position: relative;
+         bottom: -35%;
+         left: 5%;">
+        <form method="post" action="/login">
+            <p>
+                <label for="email">Your email </label>
+                <input type="text" id="email" name="email" value="jan@ucll.be">
+            </p>
+            <p>
+                <label for="password">Your password</label>
+                <input type="password" id="password" name="password" value="t">
+            </p>
+            <p>
+                <input type="submit" id="loginbutton" value="Log in">
+            </p>
+        </form>
+    </div></main>
+<div th:include="footer.html"></div>
+</body>
+</html>

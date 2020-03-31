@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Circle - ' + ${currentPage}"></title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sample.css}">
+</head>
+<body>
+<header role="banner">
+    <h1><span>Circle</span></h1>
+    <nav>
+        <ul class="sidenav">
+            <li><a href="/" th:classappend="${currentPage == 'Home'} ? 'active'" id="home"></a></li>
+            <li><a href="/chat" th:classappend="${currentPage == 'Chat'} ? 'active'" id="chat"></a></li>
+        </ul>
+    </nav>
+</header>
+<h2 th:text="${currentPage}"></h2>
+</body>
+</html>
