@@ -1,45 +1,60 @@
+//waneer window ingeladen is, roep 'getStatus' op
 window.onload = getStatus;
 
+//variabelen + onclicks
 var addFriendButton = document.getElementById("addFriendButton");
 addFriendButton.onclick = addFriend;
 var statusp = document.getElementById("statusp");
 var updateStatusButton = document.getElementById("changeStatus");
 updateStatusButton.onclick = updateStatus;
 var getFriendListRequest = new XMLHttpRequest();
-var newStatusRequest = new XMLHttpRequest();
+var addFriendRequest = new XMLHttpRequest();
+var updateStatusRequest = new XMLHttpRequest();
 
 function addFriend() {
+    //get input
     var friend = document.getElementById("friend").value;
     // encodeURIComponent om UTF-8 te gebruiken en speciale karakters om te zetten naar code
+    //op te roepen in request.getAttribute("email")
     var informatie = 'email=' + encodeURIComponent(friend);
-    newStatusRequest.open("POST", "/addFriend", true);
+    //post request naar /addFriend met addFriendRequest
+    addFriendRequest.open("POST", "/addFriend", true);
     // belangrijk dat dit gezet wordt anders kan de servlet de informatie niet interpreteren!!!
     // protocol header information
-    newStatusRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    newStatusRequest.send(informatie);
+    addFriendRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    addFriendRequest.send(informatie);
 }
 
 function updateStatus() {
+    //get input
     var status = document.getElementById("status").value;
     // encodeURIComponent om UTF-8 te gebruiken en speciale karakters om te zetten naar code
+    //op te roepen in request.getAttribute("status")
     var informatie = 'status=' + encodeURIComponent(status);
-    newStatusRequest.open("POST", "/updateStatus", true);
+    //post request naar /updateStatus met updateStatusRequest
+    updateStatusRequest.open("POST", "/updateStatus", true);
     // belangrijk dat dit gezet wordt anders kan de servlet de informatie niet interpreteren!!!
     // protocol header information
-    newStatusRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    newStatusRequest.send(informatie);
+    updateStatusRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    updateStatusRequest.send(informatie);
+    //verfijning: status updaten in html
     statusp.innerHTML = status;
 }
 
 function getStatus() {
+    //get request naar /friendlist met getFriendListRequest
     getFriendListRequest.open("GET", "/friendlist", true);
+    //wanneer deze een response krijgt: roep 'getData' op
     getFriendListRequest.onreadystatechange = getData;
     getFriendListRequest.send();
 }
 
 function getData() {
+    //als request succes is
     if (getFriendListRequest.status == 200) {
+        //als juiste status
         if (getFriendListRequest.readyState == 4) {
+            //parse responseText als JSON
             var serverResponse = JSON.parse(getFriendListRequest.responseText);
             var table = document.getElementById("friends");
 
@@ -50,6 +65,7 @@ function getData() {
 
                 var tr = table.childNodes[i];
 
+                //get from JSON
                 var friend = serverResponse[i].firstName;
                 var status = serverResponse[i].status;
 
@@ -66,7 +82,7 @@ function getData() {
                 table.appendChild(tableRow);
 
             }
-
+            //voer 'getData' uit om de 2000ms
             setTimeout(getData, 2000);
         }
     }
