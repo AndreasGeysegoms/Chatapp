@@ -52,8 +52,4 @@ public class PersonService {
 		p.setFriends(l);
 		return p;
 	}
-
-	public void refresh(Person user) {
-		personRepository.refresh(user);
-	}
 }

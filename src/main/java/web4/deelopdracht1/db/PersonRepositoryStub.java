@@ -72,20 +72,4 @@ public class PersonRepositoryStub implements PersonRepository {
 		}
 	}
 
-	public void refresh(Person user) {
-		for (Person p: persons.values()) {
-			if (p != user) {
-				List<Person> friends = persons.get(p.getUserId()).getFriends();
-
-				for (Person friend : friends) {
-					if (friend.getUserId().equals(p.getUserId())) {
-						friends.remove(friend);
-						friends.add(p);
-					}
-				}
-
-			}
-
-		}
-	}
 }

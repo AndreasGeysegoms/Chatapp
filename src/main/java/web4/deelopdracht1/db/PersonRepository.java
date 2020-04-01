@@ -18,6 +18,4 @@ public interface PersonRepository {
 
 	public abstract void update(Person person);
 
-	public abstract void refresh(Person user);
-
 }

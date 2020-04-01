@@ -17,6 +17,9 @@ import java.util.List;
 
 @RestController
 public class ChatAppRestController {
+    //FIXME: get wordt niet herhaald uitgevoerd
+    //FIXME: status wordt niet correct uitgelezen
+
 
     @Autowired
     public ChatAppRestController(PersonService personService) {
@@ -31,9 +34,18 @@ public class ChatAppRestController {
         System.out.println("refresh friends");
         Person user = (Person) request.getSession().getAttribute("user");
         ArrayList<Person> friends = (ArrayList<Person>) user.getFriends();
+        List<Person> updated = new ArrayList<>();
+        System.out.println("#vrienden: "+friends.size());
+
+        for (Person friend: friends) {
+            Person temp = personService.getPerson(friend.getUserId());
+            updated.add(temp);
+            System.out.println(temp.getUserId() + ", status: " + temp.getStatus());
+        }
+
 
             try {
-                String friendJSON = this.toJSON(friends);
+                String friendJSON = this.toJSON(updated);
                 response.setContentType("application/json");
                 response.getWriter().write(friendJSON);
             } catch (JsonProcessingException e) {
@@ -54,13 +66,14 @@ public class ChatAppRestController {
     @RequestMapping("/updateStatus")
     public void changeStatus(HttpServletRequest request , Model model) {
         String status = (String)request.getParameter("status");
-        System.out.println("Kowalski status: "+status);
+        System.out.println("update status: "+status);
         if (!status.trim().isEmpty()) {
             HttpSession session = request.getSession();
             Person user = (Person) session.getAttribute("user");
             user.setStatus(status);
             session.setAttribute("user",user);
-            personService.refresh(user);
+            personService.updatePersons(user);
+            System.out.println("Nieuwe status: " +personService.getPerson(user.getUserId()).getStatus());
         }
         else model.addAttribute("errors","Please choose a valid status.");
 
@@ -70,13 +83,13 @@ public class ChatAppRestController {
     @RequestMapping("/addFriend")
     public void addFriend(Model model, HttpServletRequest request) {
         String email = (String) request.getParameter("email");
-        System.out.println("Kowalski friend: "+email);
+        System.out.println("add friend: "+email);
         email = email + "@ucll.be";
         HttpSession session = request.getSession();
         Person user = (Person) session.getAttribute("user");
         user = personService.addFriend(user, email);
         session.setAttribute("user",user);
-        personService.refresh(personService.getPerson(email));
+        personService.updatePersons(user);
     }
 
 }

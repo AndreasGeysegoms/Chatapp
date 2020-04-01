@@ -44,51 +44,9 @@
             <input type="button" value="Add" id="addFriendButton"/>
         </p>
 
-    <div>
-        <input type="text" id="messageinput"/>
-    </div>
-    <div>
-        <button type="button" onclick="openSocket();" >Open</button>
-        <button type="button" onclick="send();" >Send</button>
-        <button type="button" onclick="closeSocket();" >Close</button>
-    </div>
-    <div id="messages"></div>
-
 </main>
 <div th:include="footer.html"></div>
 <script type="text/javascript" src="/js/status.js"></script>
-<script type="text/javascript">
-    var webSocket;
-    var messages = document.getElementById("messages");
 
-    function openSocket(){
-        webSocket = new WebSocket("ws://localhost:8080/chat/echo");
-
-        webSocket.onopen = function(event){
-            writeResponse("Connection opened")
-        };
-
-        webSocket.onmessage = function(event){
-            writeResponse(event.data);
-        };
-
-        webSocket.onclose = function(event){
-            writeResponse("Connection closed");
-        };
-    }
-
-    function send(){
-        var text = document.getElementById("messageinput").value;
-        webSocket.send(text);
-    }
-
-    function closeSocket(){
-        webSocket.close();
-    }
-
-    function writeResponse(text){
-        messages.innerHTML += "<br/>" + text;
-    }
-</script>
 </body>
 </html>

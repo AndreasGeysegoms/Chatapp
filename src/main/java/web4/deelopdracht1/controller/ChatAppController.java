@@ -62,7 +62,7 @@ public class ChatAppController {
                 HttpSession session = request.getSession();
                 person.setStatus(Status.ONLINE.getString());
                 session.setAttribute("user",person);
-                personService.refresh(person);
+                personService.updatePersons(person);
             } else {
                 errors.add("No valid email/password");
             }
@@ -82,7 +82,9 @@ public class ChatAppController {
         Person offline = (Person) session.getAttribute("user");
         offline.setStatus("Offline");
         session.setAttribute("user",null);
-        personService.refresh(offline);
+        System.out.println(personService.getPersons().size());
+        personService.updatePersons(offline);
+        System.out.println(personService.getPersons().size());
         return "redirect:/";
     }
 }

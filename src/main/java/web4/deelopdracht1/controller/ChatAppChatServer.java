@@ -10,8 +10,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-@ServerEndpoint("/chat/echo")
+@ServerEndpoint("/echo")
 public class ChatAppChatServer {
+//TODO: websockets (STOMP?)
 
     private static final Set<Session> sessions = Collections.synchronizedSet(new HashSet<Session>());
 
