@@ -1,10 +1,9 @@
-//waneer window ingeladen is, roep 'getStatus' op
-window.onload = getStatus;
+//waneer window ingeladen is, roep 'getFriends' op
+window.onload = getFriends;
 
 //variabelen + onclicks
 var addFriendButton = document.getElementById("addFriendButton");
 addFriendButton.onclick = addFriend;
-var statusp = document.getElementById("statusp");
 var updateStatusButton = document.getElementById("changeStatus");
 updateStatusButton.onclick = updateStatus;
 var getFriendListRequest = new XMLHttpRequest();
@@ -26,6 +25,7 @@ function addFriend() {
 }
 
 function updateStatus() {
+    var statusp = document.getElementById("statusp");
     //get input
     var status = document.getElementById("status").value;
     // encodeURIComponent om UTF-8 te gebruiken en speciale karakters om te zetten naar code
@@ -41,7 +41,7 @@ function updateStatus() {
     statusp.innerHTML = status;
 }
 
-function getStatus() {
+function getFriends() {
     //get request naar /friendlist met getFriendListRequest
     getFriendListRequest.open("GET", "/friendlist", true);
     //wanneer deze een response krijgt: roep 'getData' op
@@ -82,8 +82,8 @@ function getData() {
                 table.appendChild(tableRow);
 
             }
-            //voer 'getData' uit om de 2000ms
-            setTimeout(getData, 2000);
+            //voer 'getFriends' uit om de 2000ms
+            setTimeout(getFriends, 2000);
         }
     }
 }

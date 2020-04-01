@@ -17,15 +17,8 @@ import java.util.List;
 
 @RestController
 public class ChatAppRestController {
-    //FIXME: get wordt niet herhaald uitgevoerd
-    //FIXME: status wordt niet correct uitgelezen
-
 
     @Autowired
-    public ChatAppRestController(PersonService personService) {
-        this.personService = personService;
-    }
-
     private PersonService personService;
 
     @RequestMapping("/friendlist")
@@ -39,6 +32,8 @@ public class ChatAppRestController {
 
         for (Person friend: friends) {
             Person temp = personService.getPerson(friend.getUserId());
+            //recursie mijden; infinite loops enzo geen pretje
+            temp.setFriends(null);
             updated.add(temp);
             System.out.println(temp.getUserId() + ", status: " + temp.getStatus());
         }

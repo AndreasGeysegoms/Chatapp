@@ -24,8 +24,6 @@ public class ChatAppController {
 
     @Autowired
     private PersonService personService;
-    @Autowired
-    private ChatAppRestController restController;
 
     @RequestMapping("/")
     public String getIndex(Model model) {
@@ -35,8 +33,6 @@ public class ChatAppController {
     @RequestMapping("/chat")
     public String getChat(HttpServletResponse response, HttpServletRequest request, Model model) throws IOException {
         HttpSession session = request.getSession();
-
-        //restController.getFriends(user, response);
         return "chat.html";
     }
 
@@ -80,11 +76,9 @@ public class ChatAppController {
     public String logout(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Person offline = (Person) session.getAttribute("user");
-        offline.setStatus("Offline");
+        offline.setStatus(Status.OFFLINE.getString());
         session.setAttribute("user",null);
-        System.out.println(personService.getPersons().size());
         personService.updatePersons(offline);
-        System.out.println(personService.getPersons().size());
         return "redirect:/";
     }
 }
