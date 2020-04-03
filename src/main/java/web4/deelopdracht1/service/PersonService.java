@@ -48,6 +48,7 @@ public class PersonService {
 	public Person addFriend(Person user, String email) {
 		Person p = personRepository.get(user.getUserId());
 		List<Person> l = p.getFriends();
+		if (l == null) l = new ArrayList<>();
 		l.add(personRepository.get(email));
 		p.setFriends(l);
 		return p;

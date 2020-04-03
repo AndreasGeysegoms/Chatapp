@@ -28,7 +28,21 @@ public class ChatAppRestController {
         Person user = (Person) request.getSession().getAttribute("user");
         ArrayList<Person> friends = (ArrayList<Person>) user.getFriends();
         List<Person> updated = new ArrayList<>();
-        System.out.println("#vrienden: "+friends.size());
+        //nullpointer vermijden
+        if (friends != null) {
+            System.out.println("#vrienden: "+friends.size());
+        } else {
+            try {
+                String friendJSON = "{firstName: \"U vriendenlijst is leeg.\", status: \"Voeg meer vrienden toe!\"}";
+                response.setContentType("application/json");
+                response.getWriter().write(friendJSON);
+                return;
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         for (Person friend: friends) {
             Person temp = personService.getPerson(friend.getUserId());
@@ -79,7 +93,7 @@ public class ChatAppRestController {
     public void addFriend(Model model, HttpServletRequest request) {
         String email = (String) request.getParameter("email");
         System.out.println("add friend: "+email);
-        email = email + "@ucll.be";
+        email = email.toLowerCase() + "@ucll.be";
         HttpSession session = request.getSession();
         Person user = (Person) session.getAttribute("user");
         user = personService.addFriend(user, email);

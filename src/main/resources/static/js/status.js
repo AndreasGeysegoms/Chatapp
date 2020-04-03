@@ -22,6 +22,7 @@ function addFriend() {
     // protocol header information
     addFriendRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     addFriendRequest.send(informatie);
+    document.getElementById("friend").value = "";
 }
 
 function updateStatus() {

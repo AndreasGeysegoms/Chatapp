@@ -5,11 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.data.repository.NoRepositoryBean;
 import web4.deelopdracht1.domain.Person;
 import web4.deelopdracht1.domain.Role;
 
-@NoRepositoryBean
 public class PersonRepositoryStub implements PersonRepository {
 	private Map<String, Person> persons = new HashMap<String, Person>();
 	
