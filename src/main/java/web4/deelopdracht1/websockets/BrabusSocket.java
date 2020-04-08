@@ -1,4 +1,6 @@
-package web4.deelopdracht1.controller;
+package web4.deelopdracht1.websockets;
+
+import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
@@ -10,15 +12,14 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-@ServerEndpoint("/echo")
-public class ChatAppChatServer {
-//TODO: websockets (STOMP?)
+@ServerEndpoint("/b")
+public class BrabusSocket extends TextWebSocketHandler {
 
     private static final Set<Session> sessions = Collections.synchronizedSet(new HashSet<Session>());
 
     @OnOpen
     public void onOpen(Session session) {
-        System.out.println(session.getId() + " has opened a connection");
+        System.out.println("Socket B: "+session.getId() + " has opened a connection");
         sendMessageToAll("User " + session.getId() + " has connected");
         try {
             session.getBasicRemote().sendText("Connection Established");
@@ -30,13 +31,13 @@ public class ChatAppChatServer {
 
     @OnMessage
     public void onMessage(String message, Session session){
-        System.out.println("Message from " + session.getId() + ": " + message);
+        System.out.println("Socket B: Message from " + session.getId() + ": " + message);
         sendMessageToAll(message);
     }
 
     @OnClose
     public void onClose(Session session){
-        System.out.println("Chat " +session.getId()+" has ended");
+        System.out.println("Socket B: Chat " +session.getId()+" has ended");
         sessions.remove(session);
     }
 

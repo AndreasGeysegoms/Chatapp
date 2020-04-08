@@ -40,49 +40,78 @@
             </p>
         </form>
     </div>
-    <div>
-        <input type="text" id="messageinput"/>
-    </div>
-    <div>
-        <button type="button" onclick="openSocket();" >Open</button>
-        <button type="button" onclick="send();" >Send</button>
-        <button type="button" onclick="closeSocket();" >Close</button>
-    </div>
-    <div id="messages"></div>
+    <article>
+        <h1>Vraag 1:</h1>
+        <div>
+            <input type="text" id="aName"/>
+            <input type="text" id="aRemark">
+            <input type="number" min="1" max="10" id="aScore">
+        </div>
+        <div>
+            <button type="button" id="aOpen">Open</button>
+            <button type="button" id="aSend">Send</button>
+            <button type="button" id="aClose">Close</button>
+        </div>
+        <div id="aMessages"></div>
+    </article>
+    <article>
+        <h1>Vraag 2:</h1>
+        <div>
+            <input type="text" id="bName"/>
+            <input type="text" id="bRemark">
+            <input type="number" min="1" max="10" id="bScore">
+        </div>
+        <div>
+            <button type="button" id="bOpen">Open</button>
+            <button type="button" id="bSend">Send</button>
+            <button type="button" id="bClose">Close</button>
+        </div>
+        <div id="bMessages"></div>
+    </article>
+    <article>
+        <h1>Vraag 3:</h1>
+        <div>
+            <input type="text" id="cName"/>
+            <input type="text" id="cRemark">
+            <input type="number" min="1" max="10" id="cScore">
+        </div>
+        <div>
+            <button type="button" id="cOpen">Open</button>
+            <button type="button" id="cSend">Send</button>
+            <button type="button" id="cClose">Close</button>
+        </div>
+        <div id="cMessages"></div>
+    </article>
+    <article>
+        <h1>Vraag 4:</h1>
+        <div>
+            <input type="text" id="dName"/>
+            <input type="text" id="dRemark">
+            <input type="number" min="1" max="10" id="dScore">
+        </div>
+        <div>
+            <button type="button" id="dOpen">Open</button>
+            <button type="button" id="dSend">Send</button>
+            <button type="button" id="dClose">Close</button>
+        </div>
+        <div id="dMessages"></div>
+    </article>
+    <article>
+        <h1>Vraag 5:</h1>
+        <div>
+            <input type="text" id="eName"/>
+            <input type="text" id="eRemark">
+            <input type="number" min="1" max="10" id="eScore">
+        </div>
+        <div>
+            <button type="button" id="eOpen">Open</button>
+            <button type="button" id="eSend">Send</button>
+            <button type="button" id="eClose">Close</button>
+        </div>
+        <div id="eMessages"></div>
+    </article>
 </main>
-<script type="text/javascript">
-    var webSocket;
-    var messages = document.getElementById("messages");
-
-    function openSocket(){
-        webSocket = new WebSocket("ws://localhost:8080/echo");
-
-        webSocket.onopen = function(event){
-            writeResponse("Connection opened")
-        };
-
-        webSocket.onmessage = function(event){
-            writeResponse(event.data);
-        };
-
-        webSocket.onclose = function(event){
-            writeResponse("Connection closed");
-        };
-    }
-
-    function send(){
-        var text = document.getElementById("messageinput").value;
-        webSocket.send(text);
-    }
-
-    function closeSocket(){
-        webSocket.close();
-    }
-
-    function writeResponse(text){
-        messages.innerHTML += "<br/>" + text;
-    }
-</script>
+<script type="text/javascript" src="/js/sockets.js"></script>
 <div th:include="footer.html"></div>
 </body>
 </html>
