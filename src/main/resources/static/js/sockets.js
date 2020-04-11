@@ -1,6 +1,8 @@
+// variabelen
 var aWebSocket;
 var aMessages = document.getElementById("aMessages");
 var aOpen = document.getElementById("aOpen");
+// onclick instellen; als () achter de functie staat wordt deze na het inladen vd pagina uitgevoerd
 aOpen.onclick=openSocketA;
 var aSend = document.getElementById("aSend");
 aSend.onclick=sendA;
@@ -44,26 +46,32 @@ var eClose = document.getElementById("eClose");
 eClose.onclick=closeSocketE;
 
 function openSocketA(){
+    //endpoint van socket
     aWebSocket = new WebSocket("ws://localhost:8080/a");
 
+    //socket client side openen
     aWebSocket.onopen = function(event){
         writeResponse("Connection opened", aMessages)
     };
 
+    //berichten door socket versturen wanneer opgeroepen
     aWebSocket.onmessage = function(event){
         writeResponse(event.data, aMessages);
     };
 
+    //socket sluiten wanneer sluiten
     aWebSocket.onclose = function(event){
         writeResponse("Connection closed", aMessages);
     };
 }
 
+//onmessage van socket wordt opgeroepen
 function sendA(){
     var text = document.getElementById("aName").value + ': ' + document.getElementById("aRemark").value + ' ' + document.getElementById("aScore").value;
     aWebSocket.send(text);
 }
 
+//onclose van socket wordt opgeroepen
 function closeSocketA(){
     aWebSocket.close();
 }
