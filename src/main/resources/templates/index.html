@@ -9,10 +9,7 @@
             <li th:text="${error}"></li>
         </ul>
     </div>
-    <div th:if="${session.user != null}" style="
-         position: relative;
-         bottom: -35%;
-         left: 5%;">
+    <div th:if="${session.user != null}" >
         <p th:text="${'Welcome '+session.user.firstName+'!'}" style="
            margin-left: 37.5%;"
         ></p>
@@ -22,10 +19,7 @@
             </p>
         </form>
     </div>
-    <div th:unless="${session.user != null}" style="
-         position: relative;
-         bottom: -35%;
-         left: 5%;">
+    <div th:unless="${session.user != null}">
         <form method="post" action="/login">
             <p>
                 <label for="email">Your email </label>
@@ -41,11 +35,11 @@
         </form>
     </div>
     <article>
-        <h1>Vraag 1:</h1>
+        <h1>Vraag 1: Hoe vond je projectweek 1?</h1>
         <div>
-            <input type="text" id="aName"/>
-            <input type="text" id="aRemark">
-            <input type="number" min="1" max="10" id="aScore">
+            <input type="text" id="aName" placeholder="Naam"/>
+            <input type="text" id="aRemark" placeholder="Opmerking">
+            <input type="number" min="1" max="10" id="aScore" placeholder="Score">
         </div>
         <div>
             <button type="button" id="aOpen">Open</button>
@@ -55,11 +49,11 @@
         <div id="aMessages"></div>
     </article>
     <article>
-        <h1>Vraag 2:</h1>
+        <h1>Vraag 2: Hoe vond je projectweek 2?</h1>
         <div>
-            <input type="text" id="bName"/>
-            <input type="text" id="bRemark">
-            <input type="number" min="1" max="10" id="bScore">
+            <input type="text" id="bName" placeholder="Naam"/>
+            <input type="text" id="bRemark" placeholder="Opmerking">
+            <input type="number" min="1" max="10" id="bScore" placeholder="Score">
         </div>
         <div>
             <button type="button" id="bOpen">Open</button>
@@ -69,11 +63,11 @@
         <div id="bMessages"></div>
     </article>
     <article>
-        <h1>Vraag 3:</h1>
+        <h1>Vraag 3: Hoe vond je web1?</h1>
         <div>
-            <input type="text" id="cName"/>
-            <input type="text" id="cRemark">
-            <input type="number" min="1" max="10" id="cScore">
+            <input type="text" id="cName" placeholder="Naam"/>
+            <input type="text" id="cRemark" placeholder="Opmerking">
+            <input type="number" min="1" max="10" id="cScore" placeholder="Score">
         </div>
         <div>
             <button type="button" id="cOpen">Open</button>
@@ -83,11 +77,11 @@
         <div id="cMessages"></div>
     </article>
     <article>
-        <h1>Vraag 4:</h1>
+        <h1>Vraag 4: Hoe vond je web2?</h1>
         <div>
-            <input type="text" id="dName"/>
-            <input type="text" id="dRemark">
-            <input type="number" min="1" max="10" id="dScore">
+            <input type="text" id="dName" placeholder="Naam"/>
+            <input type="text" id="dRemark" placeholder="Opmerking">
+            <input type="number" min="1" max="10" id="dScore" placeholder="Score">
         </div>
         <div>
             <button type="button" id="dOpen">Open</button>
@@ -97,11 +91,11 @@
         <div id="dMessages"></div>
     </article>
     <article>
-        <h1>Vraag 5:</h1>
+        <h1>Vraag 5: Hoe vond je web3?</h1>
         <div>
-            <input type="text" id="eName"/>
-            <input type="text" id="eRemark">
-            <input type="number" min="1" max="10" id="eScore">
+            <input type="text" id="eName" placeholder="Naam"/>
+            <input type="text" id="eRemark" placeholder="Opmerking">
+            <input type="number" min="1" max="10" id="eScore" placeholder="Score">
         </div>
         <div>
             <button type="button" id="eOpen">Open</button>
