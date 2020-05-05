@@ -1,211 +1,221 @@
 @CHARSET "UTF-8";
 
 body {
-	font-size: 16px;
-	font-family: 'Trebuchet MS', Helvetica, sans-serif;
-	text-align: left;
+    font-size: 16px;
+    font-family: 'Trebuchet MS', Helvetica, sans-serif;
+    text-align: left;
 }
 
 main {
-	margin: 10px auto;
-	width: 80%;
-	max-width: 800px;
-	display: block;
-	color: white;
-	height: 85%;
+    margin: 10px auto;
+    width: 80%;
+    max-width: 800px;
+    display: block;
+    color: white;
+    height: 85%;
 }
 
 footer {
-	position: absolute;
-	bottom: 5px;
-	width: 100%;
-	margin: 0;
-	color: white;
+    position: absolute;
+    bottom: 5px;
+    width: 100%;
+    margin: 0;
+    color: white;
 }
 
 img {
-	max-width: 100%; /* responsive image */
+    max-width: 100%; /* responsive image */
 }
 
 table {
-	max-width: 100%;
-	background-color: transparent;
-	border-top: 2px solid #666;
-	border-bottom: 2px solid #666;
-	border-collapse: collapse;
-	margin-bottom: 32px;
+    max-width: 100%;
+    background-color: transparent;
+    border-top: 2px solid #666;
+    border-bottom: 2px solid #666;
+    border-collapse: collapse;
+    margin-bottom: 32px;
 }
 
 th {
-	padding: 10px 40px 10px 5px;
-	border-bottom: 1px solid #666;
-	background-color: #eee;
+    padding: 10px 40px 10px 5px;
+    border-bottom: 1px solid #666;
+    background-color: #eee;
 }
 
 td {
-	padding: 10px 40px 10px 5px;
+    padding: 10px 40px 10px 5px;
 }
 
 .number {
-	text-align: right;
-	padding-right: 10px;
+    text-align: right;
+    padding-right: 10px;
 }
 
-p>label {
-	float: left;
-	width: 25%;
-	text-align: right;
-	padding-right: 3%;
-	margin-top: 10px;
-	color: #666;
+p > label {
+    float: left;
+    width: 25%;
+    text-align: right;
+    padding-right: 3%;
+    margin-top: 10px;
+    color: #666;
 }
 
-input[type="text"],input[type="email"],input[type="password"],input[type="number"]
-	{
-	border: 1px solid #aaa;
-	color: #666;
-	height: 30px;
-	margin-right: 6px;
-	margin-top: 2px;
-	outline: 0 none;
-	padding: 3px 3px 3px 5px;
-	width: 30%;
-	font-size: 12px;
-	line-height: 15px;
-	border-radius: 3px;
-	box-shadow: inset 0px 1px 4px #ECECEC;
-	-moz-box-shadow: inset 0px 1px 4px #ECECEC;
-	-webkit-box-shadow: inset 0px 1px 4px #ECECEC;
+input[type="text"], input[type="email"], input[type="password"], input[type="number"] {
+    border: 1px solid #aaa;
+    color: #666;
+    height: 30px;
+    margin-right: 6px;
+    margin-top: 2px;
+    outline: 0 none;
+    padding: 3px 3px 3px 5px;
+    width: 30%;
+    font-size: 12px;
+    line-height: 15px;
+    border-radius: 3px;
+    box-shadow: inset 0px 1px 4px #ECECEC;
+    -moz-box-shadow: inset 0px 1px 4px #ECECEC;
+    -webkit-box-shadow: inset 0px 1px 4px #ECECEC;
 }
 
-input[type="submit"],button {
-	border: 1px solid #aaa;
-	color: #666;
-	height: 30px;
-	margin-right: 6px;
-	margin-top: 2px;
-	margin-left:40%;
-	padding: 3px 3px 3px 5px;
-	font-size: 16px;
-	border-radius: 3px;
-	box-shadow: inset 0px 1px 4px #ECECEC;
-	-moz-box-shadow: inset 0px 1px 4px #ECECEC;
-	-webkit-box-shadow: inset 0px 1px 4px #ECECEC;
+input[type="submit"], button {
+    border: 1px solid #aaa;
+    color: #666;
+    height: 30px;
+    margin-right: 6px;
+    margin-top: 2px;
+    margin-left: 40%;
+    padding: 3px 3px 3px 5px;
+    font-size: 16px;
+    border-radius: 3px;
+    box-shadow: inset 0px 1px 4px #ECECEC;
+    -moz-box-shadow: inset 0px 1px 4px #ECECEC;
+    -webkit-box-shadow: inset 0px 1px 4px #ECECEC;
 }
 
 fieldset {
-	border: 1px solid #999;
+    border: 1px solid #999;
 }
 
 .form-group {
-	margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 fieldset {
-	border: 1px solid #999;
+    border: 1px solid #999;
 }
 
 .danger {
-	background-color: #f2dede;
-	border-color: #eed3d7;
-	color: #b94a48;
+    background-color: #f2dede;
+    border-color: #eed3d7;
+    color: #b94a48;
 }
 
-p>label.has-error {
-	color: #a80f0c;
+p > label.has-error {
+    color: #a80f0c;
 }
 
 ul {
-	list-style-type: none;
-	margin-left: 20px;
+    list-style-type: none;
+    margin-left: 20px;
 }
 
 nav ul {
-	left: 0;
-	top: 0%;
-	list-style-type: none;
-	margin-bottom: 40px;
-	margin-left: 0;
-	text-align: left;
-	z-index: 1;
+    left: 0;
+    top: 0%;
+    list-style-type: none;
+    margin-bottom: 40px;
+    margin-left: 0;
+    text-align: left;
+    z-index: 1;
 }
 
 nav ul li {
-	display: inline-flex;
-	font-size: 100%;
-	background-color: darkslategrey;
-	padding: 5px;
+    display: inline-flex;
+    font-size: 100%;
+    background-color: darkslategrey;
+    padding: 5px;
 }
 
 nav ul li a {
-	text-decoration: none;
-	display: inline-block;
-	/*background-color: yellow;*/
+    text-decoration: none;
+    display: inline-block;
+    /*background-color: yellow;*/
 }
 
 nav ul li a#actual {
-	border-bottom: 1px solid black;
+    border-bottom: 1px solid black;
 }
 
 nav ul li#current {
-	border-bottom: 1px solid black;
+    border-bottom: 1px solid black;
 }
 
 html {
-	background: black;
-	background-image: url("/images/background.gif");
-	background-repeat: no-repeat;
-	background-position: center;
-	width: 99%;
-	height: 99%;
+    background: black;
+    background-image: url("/images/background.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 99%;
+    height: 99%;
 }
 
-nav	{
-	position: absolute;
-	bottom: 33%;
-	width: 10%;
-	margin: 0;
+nav {
+    position: absolute;
+    bottom: 33%;
+    width: 10%;
+    margin: 0;
 }
 
 header {
-	color: white;
+    color: white;
 }
 
 li a {
-	transition-duration: 0.65s;
-	padding: 50px;
+    transition-duration: 0.65s;
+    padding: 50px;
 }
 
 li a#home:hover, li a#home.active {
-	padding: 50px;
-	background: url("/images/homeInverted.png") no-repeat;
+    padding: 50px;
+    background: url("/images/homeInverted.png") no-repeat;
 }
 
 h1 {
-	text-align: center;
-	vertical-align: middle;
-	font-size: xx-large;
+    text-align: center;
+    vertical-align: middle;
+    font-size: xx-large;
 }
 
 li a#home {
-	background-image: url('/images/home.png');
-	background-repeat: no-repeat;
+    background-image: url('/images/home.png');
+    background-repeat: no-repeat;
 }
 
 li a#chat {
-	background-image: url('/images/chat.png');
-	background-repeat: no-repeat;
+    background-image: url('/images/chat.png');
+    background-repeat: no-repeat;
 }
 
 li a#chat:hover, li a#chat.active {
-	padding: 50px;
-	background: url("/images/chatInverted.png") no-repeat ;
+    padding: 50px;
+    background: url("/images/chatInverted.png") no-repeat;
 }
+
 h2 {
-	text-align: center;
-	color: white;
-	font-size: larger;
+    text-align: center;
+    color: white;
+    font-size: larger;
 }
+
 td {
-	color: white;
+    color: white;
 }
+
+.ui-dialog, .ui-widget, .ui-widget-content, .ui-corner-all, .foo, .ui-draggable, .ui-resizable {
+    background: #CCC
+}
+
+.ui-dialog-titlebar, .ui-corner-all, .ui-widget-header, .ui-helper-clearfix, .ui-draggable-handle {
+    background: #AAA
+}
+

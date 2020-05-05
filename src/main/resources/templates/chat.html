@@ -31,6 +31,7 @@
             <td th:text="${friend.status}"></td>
         </tr>
     </table>-->
+    <button id="showHideFriends">Hide / Show friends</button>
     <table id="friends">
 
     </table>
@@ -43,10 +44,19 @@
         <p>
             <input type="button" value="Add" id="addFriendButton"/>
         </p>
-
+    <input type="hidden" id="currentUser" th:value="${session.user.userId}">
 </main>
+<div id="chatbox"></div>
 <div th:include="footer.html"></div>
 <script type="text/javascript" src="/js/status.js"></script>
-
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#showHideFriends").click(function(){
+            $("#friends").toggle(1500);
+        });
+    });
+</script>
 </body>
 </html>

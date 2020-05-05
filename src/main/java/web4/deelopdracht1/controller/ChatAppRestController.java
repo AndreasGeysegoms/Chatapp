@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import web4.deelopdracht1.db.ChatBerichtenRepository;
+import web4.deelopdracht1.domain.Chatbericht;
 import web4.deelopdracht1.domain.Person;
+import web4.deelopdracht1.service.ChatBerichtenService;
 import web4.deelopdracht1.service.PersonService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +23,8 @@ public class ChatAppRestController {
 
     @Autowired
     private PersonService personService;
+    @Autowired
+    private ChatBerichtenService chatService;
 
     @RequestMapping("/friendlist")
     @GetMapping
@@ -99,6 +104,57 @@ public class ChatAppRestController {
         user = personService.addFriend(user, email);
         session.setAttribute("user",user);
         personService.updatePersons(user);
+    }
+
+    @GetMapping
+    @RequestMapping("/getMessages")
+    public void getMessages(HttpServletRequest request, HttpServletResponse response) {
+        String ontvangerId = request.getParameter("ontvanger").toLowerCase();
+        HttpSession session = request.getSession();
+        Person user = (Person) session.getAttribute("user");
+        try {
+            String ChatberichtenJSON = this.toJSONBerichten(chatService.getChatBerichten(user, personService.getPerson(ontvangerId)));
+            response.setContentType("application/json");
+            response.getWriter().write(ChatberichtenJSON);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String toJSONBerichten(List<Chatbericht> chatBerichten) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(chatBerichten);
+    }
+
+    @PostMapping
+    @RequestMapping("/sendMessage")
+    public void sendChatBericht(HttpServletRequest request, HttpServletResponse response) {
+        String bericht = request.getParameter("bericht");
+        HttpSession session = request.getSession();
+        Person zender = (Person) session.getAttribute("user");
+        Person ontvanger = personService.getPerson(request.getParameter("ontvanger").toLowerCase());
+        chatService.addBericht(zender, bericht, ontvanger);
+    }
+
+    @GetMapping
+    @RequestMapping("/getStatus")
+    public void getStatus(HttpServletRequest request, HttpServletResponse response) {
+        String userId = request.getParameter("userId");
+        Person p = personService.getPerson(userId);
+        String status = p.getStatus();
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            String JSON = mapper.writeValueAsString(status);
+            response.setContentType("application/json");
+            response.getWriter().write(JSON);
+        }  catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
