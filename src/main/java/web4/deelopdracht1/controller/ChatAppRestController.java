@@ -31,14 +31,14 @@ public class ChatAppRestController {
     public void getFriends(HttpServletResponse response, HttpServletRequest request, Model model) {
         System.out.println("refresh friends");
         Person user = (Person) request.getSession().getAttribute("user");
-        ArrayList<Person> friends = (ArrayList<Person>) user.getFriends();
+
+        Person userDb = (Person) personService.getPerson(user.getUserId());
+        List<Person> friends = userDb.getFriends();
         List<Person> updated = new ArrayList<>();
-        //nullpointer vermijden
-        if (friends != null) {
-            System.out.println("#vrienden: "+friends.size());
-        } else {
+        System.out.println("#vrienden: " + friends.size());
+        if (friends.size() == 0) {
             try {
-                String friendJSON = "{firstName: \"U vriendenlijst is leeg.\", status: \"Voeg meer vrienden toe!\"}";
+                String friendJSON = "[{\"firstName\":\"Uw vriendenlijst is leeg.\",\"status\":\"\"}, {\"firstName\":\"Voeg meer vrienden toe!\",\"status\":\"\"}]";
                 response.setContentType("application/json");
                 response.getWriter().write(friendJSON);
                 return;
@@ -49,47 +49,42 @@ public class ChatAppRestController {
             }
         }
 
-        for (Person friend: friends) {
-            Person temp = personService.getPerson(friend.getUserId());
-            //recursie mijden; infinite loops enzo geen pretje
-            temp.setFriends(null);
+        for (Person friend : friends) {
+            Person temp = new Person(personService.getPerson(friend.getUserId()));
             updated.add(temp);
             System.out.println(temp.getUserId() + ", status: " + temp.getStatus());
         }
-
-
-            try {
-                String friendJSON = this.toJSON(updated);
-                response.setContentType("application/json");
-                response.getWriter().write(friendJSON);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            String friendJSON = this.toJSON(updated);
+            response.setContentType("application/json");
+            response.getWriter().write(friendJSON);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
     }
 
-    public String toJSON (List<Person> persons) throws JsonProcessingException {
+    public String toJSON(List<Person> persons) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(persons);
     }
 
     @PostMapping
     @RequestMapping("/updateStatus")
-    public void changeStatus(HttpServletRequest request , Model model) {
-        String status = (String)request.getParameter("status");
-        System.out.println("update status: "+status);
+    public void changeStatus(HttpServletRequest request, Model model) {
+        String status = (String) request.getParameter("status");
+        System.out.println("update status: " + status);
         if (!status.trim().isEmpty()) {
             HttpSession session = request.getSession();
             Person user = (Person) session.getAttribute("user");
             user.setStatus(status);
-            session.setAttribute("user",user);
+            session.setAttribute("user", user);
             personService.updatePersons(user);
-            System.out.println("Nieuwe status: " +personService.getPerson(user.getUserId()).getStatus());
-        }
-        else model.addAttribute("errors","Please choose a valid status.");
+            System.out.println("Nieuwe status: " + personService.getPerson(user.getUserId()).getStatus());
+        } else model.addAttribute("errors", "Please choose a valid status.");
 
     }
 
@@ -97,12 +92,12 @@ public class ChatAppRestController {
     @RequestMapping("/addFriend")
     public void addFriend(Model model, HttpServletRequest request) {
         String email = (String) request.getParameter("email");
-        System.out.println("add friend: "+email);
+        System.out.println("add friend: " + email);
         email = email.toLowerCase() + "@ucll.be";
         HttpSession session = request.getSession();
         Person user = (Person) session.getAttribute("user");
         user = personService.addFriend(user, email);
-        session.setAttribute("user",user);
+        session.setAttribute("user", user);
         personService.updatePersons(user);
     }
 
@@ -116,8 +111,6 @@ public class ChatAppRestController {
             String ChatberichtenJSON = this.toJSONBerichten(chatService.getChatBerichten(user, personService.getPerson(ontvangerId)));
             response.setContentType("application/json");
             response.getWriter().write(ChatberichtenJSON);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -149,7 +142,7 @@ public class ChatAppRestController {
             String JSON = mapper.writeValueAsString(status);
             response.setContentType("application/json");
             response.getWriter().write(JSON);
-        }  catch (JsonProcessingException e) {
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();

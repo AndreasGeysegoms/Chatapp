@@ -107,61 +107,65 @@ function getData() {
                 var tableRow = document.createElement("tr");
                 var tableDataName = document.createElement("td");
                 var tableDataStatus = document.createElement("td");
-                var btn = document.createElement("button");
-                btn.innerHTML = "Chat!";
-                btn.className = "start_chat";
-                btn.id = friend + '@ucll.be';
 
                 tableDataName.innerHTML = friend;
                 tableDataStatus.innerHTML = status;
 
                 tableRow.appendChild(tableDataName);
                 tableRow.appendChild(tableDataStatus);
-                tableRow.appendChild(btn);
+
+                if (!(friend === "Uw vriendenlijst is leeg." || friend === "Voeg meer vrienden toe!")){
+                    var btn = document.createElement("button");
+                    btn.innerHTML = "Chat!";
+                    btn.className = "start_chat";
+                    btn.id = friend + '@ucll.be';
+                    tableRow.appendChild(btn);
+                }
                 table.appendChild(tableRow);
-
-                document.getElementById(btn.id).addEventListener('click', function(){
-                    var to_user_id = this.id;
-                    var to_user_name = this.id.replace('@ucll.be','');
-                    startChatDialog(to_user_id, to_user_name);
-                    $dialog = $("#chat_"+to_user_name+"\\@ucll\\.be");
-                    $dialog.dialog({
-                        autoOpen:false,
-                        width:400
-                    });
-                    $dialog.dialog('option', {
-                        close: function (event, ui) {
-                            $dialog.find("form").remove();
-                            $dialog.dialog('destroy');
-                        }
-                    });
-                    console.log('verbose: '+to_user_id);
-                    document.getElementById('get_'+to_user_id).addEventListener('click',function () {
-                        console.log('congrats! you have reached us!');
-                        getMessages(to_user_id);
-                    });
-                    console.log("created dialog");
-                    $dialog.dialog('open');
-                    console.log("opened dialog");
-
-                    document.getElementById('send_'+to_user_id).addEventListener('click', function() {
-                        var bericht = $("#msg_"+to_user_name+"\\@ucll\\.be").val();
-                        //input leeg maken
-                        $("#msg_"+to_user_name+"\\@ucll\\.be").val("");
-                        //ajax post naar /sendMessage
-                        $.ajax({
-                            type: "POST",
-                            url: "/sendMessage",
-                            data: {
-                                bericht: bericht,
-                                ontvanger: to_user_id
-                            },
-                            async: 'true',
-                            dataType: "json"
+                if (!(friend === "Uw vriendenlijst is leeg." || friend === "Voeg meer vrienden toe!")){
+                    document.getElementById(btn.id).addEventListener('click', function(){
+                        var to_user_id = this.id;
+                        var to_user_name = this.id.replace('@ucll.be','');
+                        startChatDialog(to_user_id, to_user_name);
+                        $dialog = $("#chat_"+to_user_name+"\\@ucll\\.be");
+                        $dialog.dialog({
+                            autoOpen:false,
+                            width:400
                         });
+                        $dialog.dialog('option', {
+                            close: function (event, ui) {
+                                $dialog.find("form").remove();
+                                $dialog.dialog('destroy');
+                            }
+                        });
+                        console.log('verbose: '+to_user_id);
+                        document.getElementById('get_'+to_user_id).addEventListener('click',function () {
+                            console.log('congrats! you have reached us!');
+                            getMessages(to_user_id);
+                        });
+                        console.log("created dialog");
+                        $dialog.dialog('open');
+                        console.log("opened dialog");
 
-                    })
-                });
+                        document.getElementById('send_'+to_user_id).addEventListener('click', function() {
+                            var bericht = $("#msg_"+to_user_name+"\\@ucll\\.be").val();
+                            //input leeg maken
+                            $("#msg_"+to_user_name+"\\@ucll\\.be").val("");
+                            //ajax post naar /sendMessage
+                            $.ajax({
+                                type: "POST",
+                                url: "/sendMessage",
+                                data: {
+                                    bericht: bericht,
+                                    ontvanger: to_user_id
+                                },
+                                async: 'true',
+                                dataType: "json"
+                            });
+
+                        })
+                    });
+                }
             }
             //voer 'getFriends' uit om de 10000ms
             setTimeout(getFriends, 10000);
