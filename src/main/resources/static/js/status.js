@@ -50,27 +50,24 @@ function getFriends() {
     getFriendListRequest.send();
 }
 
+//create een jqueryui chatbox of roept er een op
 function startChatDialog(to_user_id, to_user_name) {
-    if (!document.getElementById("chat_"+to_user_id)) {
+    if (!document.getElementById("chat_" + to_user_id)) {
         var chat = document.createElement("div");
-        chat.title = "Chat met "+to_user_name;
-        chat.id = "chat_"+to_user_id;
+        chat.title = "Chat met " + to_user_name;
+        chat.id = "chat_" + to_user_id;
         var messages = document.createElement("div");
         messages.style = "height:400px; border: 1px solid #ccc overflow";
-        messages.id = "messages_"+to_user_id;
+        messages.id = "messages_" + to_user_id;
         var input = document.createElement("input");
-        input.id = "msg_"+to_user_id;
+        input.id = "msg_" + to_user_id;
         var button = document.createElement("button");
-        button.id = "send_"+to_user_id;
+        button.id = "send_" + to_user_id;
         button.innerHTML = "SEND";
 
-        var btn = document.createElement('button');
-        btn.id = 'get_' + to_user_id;
-        btn.innerHTML = 'GET';
-        chat.appendChild(btn);
         var status = document.createElement('p');
-        status.id = "status_"+to_user_id;
-        status.innerHTML = "Unkown";
+        status.id = "status_" + to_user_id;
+        status.innerHTML = "Unknown";
         chat.appendChild(status);
 
         chat.appendChild(messages);
@@ -114,7 +111,7 @@ function getData() {
                 tableRow.appendChild(tableDataName);
                 tableRow.appendChild(tableDataStatus);
 
-                if (!(friend === "Uw vriendenlijst is leeg." || friend === "Voeg meer vrienden toe!")){
+                if (!(friend === "Uw vriendenlijst is leeg." || friend === "Voeg meer vrienden toe!")) {
                     var btn = document.createElement("button");
                     btn.innerHTML = "Chat!";
                     btn.className = "start_chat";
@@ -122,36 +119,33 @@ function getData() {
                     tableRow.appendChild(btn);
                 }
                 table.appendChild(tableRow);
-                if (!(friend === "Uw vriendenlijst is leeg." || friend === "Voeg meer vrienden toe!")){
-                    document.getElementById(btn.id).addEventListener('click', function(){
+                if (!(friend === "Uw vriendenlijst is leeg." || friend === "Voeg meer vrienden toe!")) {
+                    document.getElementById(btn.id).addEventListener('click', function () {
                         var to_user_id = this.id;
-                        var to_user_name = this.id.replace('@ucll.be','');
+                        var to_user_name = this.id.replace('@ucll.be', '');
                         startChatDialog(to_user_id, to_user_name);
-                        $dialog = $("#chat_"+to_user_name+"\\@ucll\\.be");
+                        $dialog = $("#chat_" + to_user_name + "\\@ucll\\.be");
                         $dialog.dialog({
-                            autoOpen:false,
-                            width:400
+                            autoOpen: false,
+                            width: 400
                         });
                         $dialog.dialog('option', {
                             close: function (event, ui) {
                                 $dialog.find("form").remove();
-                                $dialog.dialog('destroy');
+                                $dialog.empty();
+                                $dialog.remove();
                             }
-                        });
-                        console.log('verbose: '+to_user_id);
-                        document.getElementById('get_'+to_user_id).addEventListener('click',function () {
-                            console.log('congrats! you have reached us!');
-                            getMessages(to_user_id);
                         });
                         console.log("created dialog");
                         $dialog.dialog('open');
+                        getMessages(to_user_id);
                         console.log("opened dialog");
 
-                        document.getElementById('send_'+to_user_id).addEventListener('click', function() {
-                            var bericht = $("#msg_"+to_user_name+"\\@ucll\\.be").val();
+                        document.getElementById('send_' + to_user_id).addEventListener('click', function () {
+                            var bericht = $("#msg_" + to_user_name + "\\@ucll\\.be").val();
                             //input leeg maken
-                            $("#msg_"+to_user_name+"\\@ucll\\.be").val("");
-                            //ajax post naar /sendMessage
+                            $("#msg_" + to_user_name + "\\@ucll\\.be").val("");
+                            //ajax POST naar /sendMessage
                             $.ajax({
                                 type: "POST",
                                 url: "/sendMessage",
@@ -172,33 +166,40 @@ function getData() {
         }
     }
 
+    //ajax GET polling
     function getMessages(ontvanger_id) {
-        $.ajax({
-            type: "Get",
-            url: "/getMessages",
-            data: {
-                ontvanger: ontvanger_id
-            },
-            async: 'true',
-            dataType: "json",
-            success: function(json) {
-                $("#messages_"+ontvanger_id.replace('@','\\@').replace('.','\\.')).empty();
-                $(json).each(function(index, chatbericht) {
-                    console.log(ontvanger_id);
-                    $("#messages_"+ontvanger_id.replace('@','\\@').replace('.','\\.')).append($('<p />').text( chatbericht.zender.userId + ' : ' + chatbericht.bericht));
+        //als chatvenster open is (werkt niet 100%)
+        if ($('#chat_' + ontvanger_id.replace('@', '\\@').replace('.', '\\.')).length !== 0 || !$('#chat_' + ontvanger_id.replace('@', '\\@').replace('.', '\\.')).dialog('isOpen')) {
+            $.ajax({
+                type: "Get",
+                url: "/getMessages",
+                data: {
+                    ontvanger: ontvanger_id
+                },
+                async: 'true',
+                dataType: "json",
+                success: function (json) {
+                    $("#messages_" + ontvanger_id.replace('@', '\\@').replace('.', '\\.')).empty();
+                    $(json).each(function (index, chatbericht) {
+                        console.log(ontvanger_id);
+                        $("#messages_" + ontvanger_id.replace('@', '\\@').replace('.', '\\.')).append($('<p />').text(chatbericht.zender.userId + ' : ' + chatbericht.bericht));
+                    });
 
-                    //TODO: massa berichten worden gestruurd ook na dat het venster gesloten is ==> browser gaat laggen
-                    //TODO: chatberichten ophalen bij openen
-                    //TODO: status ophalen bij openen of niet
-                });
-                //setTimeout(getMessages(ontvanger_id), 10000);
-            }
-        });
+                    setTimeout(function () {
+                        getMessages(ontvanger_id);
+                    }, 10000);
+
+                }
+            });
+            getStatus(ontvanger_id);
+        }
+
     }
 
+    //AJAX GET eigen functionaliteit
     function getStatus(ontvanger_id) {
-        $.get("/getStatus", {userId: ontvanger_id}, function(status) {
-            $("#status_"+ontvanger_id).html(status);
+        $.get("/getStatus", {userId: ontvanger_id}, function (status) {
+            $("#status_" + ontvanger_id.replace('@', '\\@').replace('.', '\\.')).html(status);
         })
     }
 }

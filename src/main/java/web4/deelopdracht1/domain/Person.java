@@ -1,5 +1,7 @@
 package web4.deelopdracht1.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -20,6 +22,7 @@ public class Person implements Serializable {
 	private String lastName;
 	private Role role;
 	private String status;
+	@JsonIgnore
 	private List<Person> friends;
 	public static final long serialVersionUID = -2027570287447017702L;
 

@@ -135,15 +135,13 @@ public class ChatAppRestController {
     @RequestMapping("/getStatus")
     public void getStatus(HttpServletRequest request, HttpServletResponse response) {
         String userId = request.getParameter("userId");
-        Person p = personService.getPerson(userId);
+        Person p = personService.getPerson(userId.toLowerCase());
         String status = p.getStatus();
         try {
             ObjectMapper mapper = new ObjectMapper();
             String JSON = mapper.writeValueAsString(status);
             response.setContentType("application/json");
             response.getWriter().write(JSON);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
