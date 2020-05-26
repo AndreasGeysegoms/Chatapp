@@ -1,13 +1,17 @@
 package web4.deelopdracht1.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import web4.deelopdracht1.db.ChatBerichtenRepository;
 import web4.deelopdracht1.domain.Chatbericht;
 import web4.deelopdracht1.domain.Person;
+import web4.deelopdracht1.domain.Role;
 import web4.deelopdracht1.service.ChatBerichtenService;
 import web4.deelopdracht1.service.PersonService;
 
@@ -18,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 public class ChatAppRestController {
 
@@ -146,6 +151,61 @@ public class ChatAppRestController {
             e.printStackTrace();
         }
 
+    }
+
+    @GetMapping
+    @RequestMapping("/getUsers")
+    public void getUsers(HttpServletResponse response) {
+        List<Person> persons = personService.getPersons();
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            String JSON = toJSON(persons);
+            response.setContentType("application/json");
+
+            // allow Angular
+            response.setHeader("Access-Control-Allow-Origin","*");
+
+            response.getWriter().write(JSON);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @PostMapping
+    @RequestMapping(value = "/updateUser")
+    @CrossOrigin(origins = "http://localhost:4200")
+    public void update(HttpServletRequest request, HttpServletResponse response, HttpEntity<String> httpEntity) {
+        String id;
+        String lnaam;
+        String vnaam;
+        Person p = new Person();
+        try {
+            JsonNode body = new ObjectMapper().readTree(httpEntity.getBody());
+            id = body.get("userId").asText();
+            vnaam = body.get("firstName").asText();
+            lnaam = body.get("lastName").asText();
+            System.out.println(id);
+            System.out.println(vnaam);
+            System.out.println(lnaam);
+            p.setUserId(id);
+            p.setLastName(lnaam);
+            p.setFirstName(vnaam);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        Person repo = this.personService.getPerson(p.getUserId());
+        String status = repo.getStatus();
+        p.setStatus(status);
+        String pass = repo.getPassword();
+        p.setPassword(pass);
+        String salt = repo.getSalt();
+        p.setSalt(salt);
+        Role role = repo.getRole();
+        p.setRole(role);
+        List<Person> friends = repo.getFriends();
+        p.setFriends(friends);
+        this.personService.updatePersons(p);
     }
 
 }

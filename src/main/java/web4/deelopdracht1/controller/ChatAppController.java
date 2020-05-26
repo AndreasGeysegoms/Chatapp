@@ -81,4 +81,24 @@ public class ChatAppController {
         personService.updatePersons(offline);
         return "redirect:/";
     }
+
+    @GetMapping
+    @RequestMapping("/registerPage")
+    public String registerPage(Model model, HttpServletRequest request) {
+        return "registerForm.html";
+    }
+
+    @PostMapping
+    @RequestMapping("/register")
+    public String register(Model model, @RequestParam(name = "pass") String password, @RequestParam(name = "pass2") String password2, @RequestParam(name = "email") String userid, @RequestParam(name = "naam") String naam, @RequestParam(name = "vnaam") String vnaam) {
+        Person newUser = new Person();
+        newUser.setFirstName(vnaam);
+        newUser.setLastName(naam);
+        newUser.setHashedPassword(password);
+        newUser.setUserId(userid);
+        newUser.setFriends(new ArrayList<>());
+        newUser.setStatus(Status.OFFLINE.getString());
+        personService.updatePersons(newUser);
+        return "redirect:/";
+    }
 }

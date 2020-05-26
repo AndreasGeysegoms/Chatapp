@@ -22,9 +22,24 @@ public class Person implements Serializable {
 	private String lastName;
 	private Role role;
 	private String status;
+	private String geslacht;
 	@JsonIgnore
 	private List<Person> friends;
 	public static final long serialVersionUID = -2027570287447017702L;
+
+	public Person(String vnaam, String naam, String pass, String pass2, String email, String geslacht) {
+		if (!pass.equals(pass2)) {
+			throw new DomainException("Oops geen correcte paswoorden.");
+		} else {
+			this.firstName = vnaam;
+			this.lastName = naam;
+			this.geslacht = geslacht;
+			this.userId = email;
+			this.friends = new ArrayList<>();
+			this.status = Status.OFFLINE.getString();
+			setHashedPassword(pass);
+		}
+	}
 
 	public Person(String userId, String password, String firstName,
 			String lastName,Role role) {
