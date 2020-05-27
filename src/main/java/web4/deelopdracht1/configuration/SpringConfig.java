@@ -1,4 +1,4 @@
-package web4.deelopdracht1.configuration;
+/*package web4.deelopdracht1.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -14,3 +14,4 @@ public class SpringConfig implements WebMvcConfigurer {
         registry.addMapping("/**").allowedOrigins("http://localhost:4200");
     }
 }
+*/
